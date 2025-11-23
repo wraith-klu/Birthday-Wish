@@ -14,7 +14,7 @@ export default function Gallery({ images }: { images: string[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [imageHeights, setImageHeights] = useState<number[]>([]);
 
-  const imageRefs = useRef<HTMLImageElement[]>([]);
+  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   useEffect(() => {
     const updateHeights = () => {
@@ -27,12 +27,15 @@ export default function Gallery({ images }: { images: string[] }) {
     return () => window.removeEventListener("resize", updateHeights);
   }, [images]);
 
-  const toggleNote = (i: number) => setOpenIndex(openIndex === i ? null : i);
+  const toggleNote = (i: number) => {
+    setOpenIndex(openIndex === i ? null : i);
+  };
 
   return (
     <div className="gallery-grid mt-8 flex flex-wrap justify-center gap-6">
       {images.map((src, i) => {
         const isOpen = openIndex === i;
+
         return (
           <motion.div
             key={i}
@@ -41,7 +44,9 @@ export default function Gallery({ images }: { images: string[] }) {
           >
             {/* IMAGE */}
             <motion.img
-              ref={(el) => (imageRefs.current[i] = el!)}
+              ref={(el) => {
+                imageRefs.current[i] = el;
+              }}
               src={src}
               alt={`photo-${i + 1}`}
               initial={{ opacity: 0, y: 20 }}
@@ -91,9 +96,9 @@ export default function Gallery({ images }: { images: string[] }) {
                     height: imageHeights[i] ? imageHeights[i] : "auto",
                     display: "flex",
                     alignItems: "center",
-                    flex: "1 1 auto", // <--- flexible width
+                    flex: "1 1 auto",
                     minWidth: "280px",
-                    maxWidth: "600px" // optional max width for large screens
+                    maxWidth: "600px"
                   }}
                 >
                   {[...Array(8)].map((_, h) => (
@@ -122,6 +127,7 @@ export default function Gallery({ images }: { images: string[] }) {
                           fill={`hsl(${(h * 50) % 360}, 90%, 70%)`}
                         />
                       </svg>
+
                       <motion.div
                         className="absolute w-2 h-2 bg-white rounded-full"
                         animate={{ opacity: [0, 1, 0] }}
@@ -139,7 +145,8 @@ export default function Gallery({ images }: { images: string[] }) {
                     className="text-lg md:text-xl font-bold"
                     style={{
                       fontFamily: "'Dancing Script', cursive",
-                      background: "linear-gradient(90deg, #ff6fb5, #c77bff, #ffb3e6)",
+                      background:
+                        "linear-gradient(90deg, #ff6fb5, #c77bff, #ffb3e6)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent"
                     }}
