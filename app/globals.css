@@ -1,26 +1,129 @@
+@import "tailwindcss/preflight";
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* base theme */
+:root{
+  --bg1: #fff7fb;
+  --bg2: #f4f1ff;
+  --accent: #ff6fb5;
+  --muted: #4b3b6b;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* page */
+html,body,#__next { height: 100%; }
+body {
+  font-family: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(circle at 10% 10%, rgba(255,240,247,0.6), transparent 10%),
+              linear-gradient(135deg,var(--bg1),var(--bg2));
+  color: var(--muted);
+  -webkit-font-smoothing: antialiased;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* translucent card */
+.card {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(77,63,111,0.08);
+}
+
+/* hearts */
+.hearts-wrapper .heart {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background: radial-gradient(circle at 30% 30%, #ff9cc9, #ff6fb5);
+  transform: rotate(-45deg);
+  opacity: 0.16;
+  animation: float 8s ease-in-out infinite;
+  border-radius: 6px 6px 0 0;
+}
+.hearts-wrapper .heart::before,.hearts-wrapper .heart::after{
+  content:"";position:absolute;width:48px;height:48px;background:inherit;border-radius:50%;
+}
+.hearts-wrapper .heart::before{ top:-24px; left:0 }
+.hearts-wrapper .heart::after{ left:24px; top:0 }
+.hearts-wrapper .h1{ left:6%; top:18%; animation-delay:0s; }
+.hearts-wrapper .h2{ left:82%; top:10%; animation-delay:2s; transform:rotate(-30deg) scale(1.1) }
+.hearts-wrapper .h3{ left:50%; top:72%; animation-delay:4s }
+.hearts-wrapper .h4{ left:22%; top:58%; animation-delay:6s }
+
+@keyframes float{
+  0%{ transform: translateY(0) rotate(-45deg); opacity:.16 }
+  50%{ transform: translateY(-22px) rotate(-45deg); opacity:.28 }
+  100%{ transform: translateY(0) rotate(-45deg); opacity:.16 }
+}
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 80, 180, 0.5),
+                0 0 20px rgba(255, 80, 180, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 0, 120, 0.6),
+                0 0 40px rgba(255, 0, 120, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 80, 180, 0.5),
+                0 0 20px rgba(255, 80, 180, 0.3);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.animate-glow {
+  animation: glow 2.5s infinite ease-in-out;
+}
+
+/* gallery grid but keep natural image sizing */
+.gallery-grid { display: grid; grid-template-columns: repeat(3, auto); gap: 1rem; justify-content:center; }
+@media (max-width:900px){ .gallery-grid{ grid-template-columns: repeat(2, auto);} }
+@media (max-width:600px){ .gallery-grid{ grid-template-columns: 1fr; } }
+
+/* note tag overlay in front of each image */
+.note-sticker {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  transform-origin: center;
+  z-index: 20;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  animation: stickerFloat 3.6s ease-in-out infinite;
+}
+@keyframes stickerFloat {
+  0% { transform: translateY(0) rotate(-6deg) scale(1); }
+  50% { transform: translateY(-8px) rotate(2deg) scale(1.02); }
+  100% { transform: translateY(0) rotate(-6deg) scale(1); }
+}
+@keyframes pulse-slow {
+  0% { box-shadow: 0 0 20px rgba(255, 150, 230, 0.6); }
+  50% { box-shadow: 0 0 35px rgba(255, 90, 210, 0.8); }
+  100% { box-shadow: 0 0 20px rgba(255, 150, 230, 0.6); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+
+/* hero flower background accent */
+.hero-flowers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,210,230,0.9), transparent 10%),
+    radial-gradient(circle at 90% 80%, rgba(200,220,255,0.7), transparent 10%),
+    url('/poster.png'); /* uses your uploaded poster (copy it to public/poster.png) */
+  background-size: cover;
+  background-blend-mode: overlay;
+}
+
+/* small utilities */
+.btn-primary {
+  background: linear-gradient(90deg,#ff6fb5,#c77bff);
+  color: white;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(199,123,255,0.12);
 }
