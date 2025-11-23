@@ -127,3 +127,72 @@ body {
   font-weight: 600;
   box-shadow: 0 10px 30px rgba(199,123,255,0.12);
 }
+
+/* ---------- MOBILE RESPONSIVE FIXES ---------- */
+
+/* make cards full-width and stack properly */
+@media (max-width: 900px) {
+  .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1rem !important;
+  }
+
+  /* gallery grid for 2 columns already handled */
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+/* single column on small mobile screens */
+@media (max-width: 600px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  /* ensure image stays within card and responsive */
+  .card img {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  /* note sticker floating on small screens becomes static */
+  .note-sticker {
+    position: static !important;
+    transform: none !important;
+    margin-bottom: 0.5rem;
+    animation: none !important;
+    top: auto !important;
+    right: auto !important;
+  }
+
+  /* note paragraph appears below image */
+  .note-paragraph {
+    position: static !important;
+    margin-top: 0.75rem;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* improve readability on very small devices */
+@media (max-width: 400px) {
+  .note-paragraph p {
+    font-size: 0.9rem;
+  }
+
+  .note-sticker {
+    padding: 4px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ---------- SINGLE ROW PER IMAGE FIX (all screens) ---------- */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr !important; /* Force each image in its own row */
+  gap: 1rem;
+  justify-content: center;
+}
